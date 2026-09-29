@@ -1,0 +1,174 @@
+@layer theme, base, components, utilities;
+
+@import "./tokens.css";
+@import "./theme.css";
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Keyframe animations compose duration and easing tokens; they are behavior, not tokens. */
+@theme {
+  --animate-spin: rh-spin 0.8s linear infinite;
+  --animate-shimmer: rh-shimmer 1.4s var(--rh-ease-standard) infinite alternate;
+  --animate-page-in: rh-rise var(--rh-duration-base) var(--rh-ease-standard) both;
+  --animate-toast-in: rh-drop var(--rh-duration-slow) var(--rh-ease-spring) both;
+  --animate-chart-draw: rh-draw var(--rh-duration-draw) var(--rh-ease-standard) both;
+  --animate-passkey-scan: rh-scan 1.2s var(--rh-ease-standard) both;
+  --animate-passkey-done: rh-pop 700ms var(--rh-ease-spring) both;
+  --animate-graduate: rh-graduate 1.2s var(--rh-ease-spring) both;
+  --animate-grow-x: rh-grow-x var(--rh-duration-slow) var(--rh-ease-standard) both;
+
+  @keyframes rh-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rh-rise {
+    from {
+      opacity: 0;
+      transform: translateY(var(--rh-space-2));
+    }
+  }
+
+  @keyframes rh-drop {
+    from {
+      opacity: 0;
+      transform: translateY(calc(var(--rh-space-4) * -1)) scale(0.96);
+    }
+  }
+
+  /* Paths set pathLength="1", so the whole line is one dash drawn from 1 to 0. */
+  @keyframes rh-draw {
+    from {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes rh-scan {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(var(--rh-space-16));
+      opacity: 0.2;
+    }
+  }
+
+  @keyframes rh-pop {
+    0% {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* The graduation moment: the card swells and a ring of the accent color fades out. */
+  @keyframes rh-graduate {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 var(--rh-color-accent);
+    }
+    35% {
+      transform: scale(1.03);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 var(--rh-space-4) transparent;
+    }
+  }
+
+  /* Bars grow in from their start edge; set transform-origin on the element. */
+  @keyframes rh-grow-x {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  @keyframes rh-shimmer {
+    from {
+      opacity: 0.55;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  html {
+    background-color: var(--rh-color-canvas);
+    color: var(--rh-color-ink);
+    font-family: var(--rh-font-sans);
+    font-size: 15px;
+    line-height: 22px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--rh-color-focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--rh-color-live-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after,
+    ::backdrop {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  dialog.sheet::backdrop {
+    opacity: 1;
+    transition: opacity var(--rh-duration-base) var(--rh-ease-standard);
+  }
+
+  @starting-style {
+    dialog.sheet[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  dialog.sheet[data-closing]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* The splash's one parallax: the token layer drifts down as the page scrolls, so it moves slower than the text. */
+@supports (animation-timeline: scroll()) {
+  .parallax-layer {
+    animation: rh-parallax linear both;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes rh-parallax {
+    to {
+      transform: translateY(45dvh);
+    }
+  }
+}

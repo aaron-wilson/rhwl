@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`demo market > renders the same series for the same seed and time (snapshot) 1`] = `
+[
+  "189.28395947",
+  "189.17252857",
+  "189.52842961",
+  "189.31474448",
+  "189.47519284",
+]
+`;

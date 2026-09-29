@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+dist/
+playwright-report/
+test-results/
+AGENTS*.md
+PLAN.md
+README.md
+src/styles/tokens.css
+src/styles/theme.css
+src/data/bip39-english.txt

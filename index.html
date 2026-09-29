@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="An independent, simulated self-custody wallet prototype for Robinhood Chain."
+    />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#F7F6F3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B0B0A" media="(prefers-color-scheme: dark)" />
+    <!-- Applies a saved light/dark choice before first paint. Allowed in the CSP by its sha256. -->
+    <script>
+      try {
+        var s = JSON.parse(localStorage.getItem("rhwl:v1") || "null");
+        if (s && (s.theme === "light" || s.theme === "dark"))
+          document.documentElement.dataset.theme = s.theme;
+      } catch (e) {}
+    </script>
+    <title>Wallet — prototype</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
